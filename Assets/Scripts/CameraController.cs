@@ -23,15 +23,13 @@ namespace Plattko
 
         [Header("Ortho bounds")]
         [SerializeField] private float maxOrthoSize = 16f;
-        [SerializeField] private float minOrthoSize = 8f;
+        [SerializeField] private float minOrthoSize = 10f;
+        [SerializeField] private float panOutOrthoSize = 20f;
         private float orthoSize;
 
         [Header("Camera behaviour points")]
-        [SerializeField] private float stopPanInDistance = 0.25f;
-        [SerializeField] private float panOutDistance = 0.45f;
-
-        private float stillPanFowardDistance = 0.08f;
-        private float panOutForwardDistance = 0.145f;
+        private float stillPanFowardDistance = 4f;
+        private float panOutForwardDistance = 7.2f;
         
         // Smooth damping
         private float velocity = 0f;
@@ -47,71 +45,67 @@ namespace Plattko
 
         private void Update()
         {
-            Vector3 playerPos = hill.InverseTransformPoint(player.position);
-
-            //// Make camera ortho size relative to player position on hill
-            //if (playerPos.y < stopPanInDistance)
+            //switch (cameraState)
             //{
-            //    float distanceFromTop = playerPos.y - 0.5f;
-            //    //Debug.Log("Distance from top: " + distanceFromTop);
-            //    Debug.Log("Player Y pos: " + playerPos.y);
-            //    orthoSize = Mathf.Abs(distanceFromTop) * 20f;
-            //    orthoSize = Mathf.Clamp(orthoSize, minOrthoSize, maxOrthoSize);
-            //    virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, orthoSize, ref velocity, smoothTime);
-            //}
-            //else if (playerPos.y > panOutDistance)
-            //{
-            //    virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, 20f, ref velocity, 1f);
-            //}
-
-            switch (cameraState)
-            {
-                case CameraState.FarPan:
-
-                    float distanceFromTop = playerPos.y - 0.5f;
-                    //Debug.Log("Distance from top: " + distanceFromTop);
-                    //Debug.Log("Player Y pos: " + playerPos.y);
-                    orthoSize = Mathf.Abs(distanceFromTop) * 20f;
-                    orthoSize = Mathf.Clamp(orthoSize, minOrthoSize, maxOrthoSize);
-                    virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, orthoSize, ref velocity, smoothTime);
-
-                    if (playerController.forwardDistance >= stillPanFowardDistance)
-                    {
-                        Debug.Log("Changed to StillPan state.");
-                        cameraState = CameraState.StillPan;
-                    }
-                    break;
-
-                case CameraState.StillPan:
+            //    case CameraState.FarPan:
                     
-                    if (playerController.forwardDistance < stillPanFowardDistance)
-                    {
-                        Debug.Log("Changed to FarPan state.");
-                        cameraState = CameraState.FarPan;
-                    }
+            //        Vector3 playerPos = hill.InverseTransformPoint(player.position);
+            //        float distanceFromTop = playerPos.y - 0.5f;
 
-                    if (playerController.forwardDistance >= panOutForwardDistance)
-                    {
-                        Debug.Log("Changed to PanOut state.");
-                        // Pan out
-                        virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, 20f, ref velocity, 1f);
-                        cameraState = CameraState.HillTopPan;
-                    }
-                    break;
+            //        //Debug.Log("Distance from top: " + distanceFromTop);
+            //        //Debug.Log("Player Y pos: " + playerPos.y);
 
-                case CameraState.HillTopPan:
-                    if (playerController.forwardDistance < panOutForwardDistance)
-                    {
-                        Debug.Log("Changed to StillPan state.");
-                        // Pan back in
-                        virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, 8f, ref velocity, 1f);
-                        cameraState = CameraState.StillPan;
-                    }
-                    break;
+            //        orthoSize = Mathf.Abs(distanceFromTop) * 20f;
+            //        orthoSize = Mathf.Clamp(orthoSize, minOrthoSize, maxOrthoSize);
+            //        virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, orthoSize, ref velocity, smoothTime);
 
-                default:
-                    break;
-            }
+            //        if (playerController.forwardDistance >= stillPanFowardDistance)
+            //        {
+            //            Debug.Log("Changed to StillPan state.");
+            //            virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, minOrthoSize, ref velocity, smoothTime);
+            //            cameraState = CameraState.StillPan;
+            //        }
+            //        break;
+
+            //    case CameraState.StillPan:
+
+            //        if (playerController.forwardDistance < stillPanFowardDistance)
+            //        {
+            //            Debug.Log("Changed to FarPan state.");
+            //            cameraState = CameraState.FarPan;
+            //        }
+
+            //        if (playerController.forwardDistance >= panOutForwardDistance)
+            //        {
+            //            Debug.Log("Changed to PanOut state.");
+            //            // Pan out
+            //            virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, panOutOrthoSize, ref velocity, 1f);
+
+            //            Debug.Log(Mathf.Abs(virtualCam.m_Lens.OrthographicSize - panOutOrthoSize));
+            //            if (Mathf.Abs(virtualCam.m_Lens.OrthographicSize - panOutOrthoSize) < 0.01f)
+            //            {
+            //                cameraState = CameraState.HillTopPan;
+            //            }
+            //        }
+            //        break;
+
+            //    case CameraState.HillTopPan:
+            //        if (playerController.forwardDistance < panOutForwardDistance)
+            //        {
+            //            Debug.Log("Changed to StillPan state.");
+            //            // Pan back in
+            //            virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, minOrthoSize, ref velocity, 1f);
+
+            //            if (Mathf.Abs(virtualCam.m_Lens.OrthographicSize - minOrthoSize) < 0.01f)
+            //            {
+            //                cameraState = CameraState.StillPan;
+            //            }
+            //        }
+            //        break;
+
+            //    default:
+            //        break;
+            //}
         }
     }
 }

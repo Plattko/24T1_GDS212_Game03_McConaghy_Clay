@@ -36,7 +36,7 @@ namespace Plattko
             }
 
             forwardDistance += moveInput.y * Time.deltaTime;
-            Debug.Log("Forward distance: " + forwardDistance * Time.deltaTime);
+            //Debug.Log("Forward distance: " + forwardDistance);
         }
 
         public void OnMove(InputAction.CallbackContext context)
