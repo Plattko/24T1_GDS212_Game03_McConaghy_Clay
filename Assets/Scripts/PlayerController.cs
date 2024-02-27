@@ -15,6 +15,9 @@ namespace Plattko
         [SerializeField] private float walkSpeed = 5f;
         [HideInInspector] public bool isOnNearSide = true;
 
+        // Hill traversal variables
+        public float forwardDistance = 0f;
+
         void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
@@ -31,6 +34,9 @@ namespace Plattko
             {
                 rb.velocity = new Vector2(moveInput.x, -moveInput.y) * walkSpeed * Time.deltaTime * 50f;
             }
+
+            forwardDistance += moveInput.y * Time.deltaTime;
+            Debug.Log("Forward distance: " + forwardDistance * Time.deltaTime);
         }
 
         public void OnMove(InputAction.CallbackContext context)

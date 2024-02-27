@@ -255,7 +255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &475199581
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -317,8 +317,8 @@ Transform:
   m_GameObject: {fileID: 475199580}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_LocalPosition: {x: 0, y: 3.82, z: 0}
+  m_LocalScale: {x: 8.37, y: 8.37, z: 0.837}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -1125,7 +1125,7 @@ Transform:
   m_GameObject: {fileID: 1338657631}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1209,6 +1209,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   walkSpeed: 1
   isOnNearSide: 1
+  forwardDistance: 0
 --- !u!61 &1338657636
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1569,7 +1570,7 @@ Transform:
   m_GameObject: {fileID: 1820780449}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: -3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1902,6 +1903,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2074890117}
   - component: {fileID: 2074890116}
+  - component: {fileID: 2074890118}
   m_Layer: 0
   m_Name: CM Virtual Camera
   m_TagString: Untagged
@@ -1957,13 +1959,31 @@ Transform:
   m_GameObject: {fileID: 2074890115}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: -3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 397815429}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2074890118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074890115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35022b390b6325d45b273deb8516fd4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hill: {fileID: 1150195993}
+  player: {fileID: 1338657633}
+  maxOrthoSize: 16
+  minOrthoSize: 8
+  stopPanInDistance: 0.25
+  panOutDistance: 0.42
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
