@@ -8,9 +8,11 @@ namespace Plattko
     {
         private SpriteRenderer spriteRenderer;
 
+        public Vector3 currentMinScale;
+
         private void Start()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
