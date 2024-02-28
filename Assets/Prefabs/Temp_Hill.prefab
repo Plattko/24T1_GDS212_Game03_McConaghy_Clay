@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 5051776842153884103}
   - component: {fileID: 4333861328023651030}
   - component: {fileID: 1730657054108429293}
+  - component: {fileID: 4421802537179411785}
   m_Layer: 0
   m_Name: Temp_Hill
   m_TagString: Untagged
@@ -405,6 +406,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f7dbc2b03d10bc489420a26263fec4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMinScale: {x: 0, y: 0, z: 0}
+--- !u!114 &4421802537179411785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4187236029514600981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7598286be12b2e4cb624380b726f46a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  protrusionFactor: 1.5
 --- !u!1 &4695016793434163108
 GameObject:
   m_ObjectHideFlags: 0

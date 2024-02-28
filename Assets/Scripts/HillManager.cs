@@ -9,6 +9,7 @@ namespace Plattko
     public class HillManager : MonoBehaviour
     {
         [SerializeField] private GameObject[] hills;
+        [SerializeField] private HillParallax[] hillParallaxes;
         [SerializeField] private PlayerController playerController;
         [SerializeField] private CinemachineVirtualCamera virtualCam;
 
@@ -78,6 +79,21 @@ namespace Plattko
             {
                 StartCoroutine(HillForwardTransition());
             }
+
+            //float playerYPosition = playerController.transform.position.y;
+
+            //for (int i = 0; i < hillParallaxes.Length; i++)
+            //{
+            //    if (i != currentHill)
+            //    {
+            //        hillParallaxes[i].UpdateParallax(playerYPosition);
+            //    }
+            //}
+
+            //for (int i = currentHill; i < hillParallaxes.Length; i++)
+            //{
+            //    hillParallaxes[i].ScrollHill(playerController.forwardDistance, 5 / (i + 1));
+            //}
         }
 
         private IEnumerator HillForwardTransition()
