@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Plattko
 {
@@ -36,6 +37,8 @@ namespace Plattko
         {
             Debug.Log("Began hill foward transition.");
             playerController.forwardDistance = 0f;
+            // Disable player input
+            playerController.isInHillTransition = true;
 
             yield return new WaitForSeconds(transitionTime);
 
@@ -54,6 +57,8 @@ namespace Plattko
             playerController.transform.localScale = newHillPlayerScale;
             // Set new player position
             playerController.transform.localPosition = new Vector2(playerController.transform.localPosition.x, -0.45f);
+            // Re-enable player input
+            playerController.isInHillTransition = false;
 
             Debug.Log("Hill forward transition complete.");
         }
