@@ -39,7 +39,7 @@ namespace Plattko
                 }
 
                 forwardDistance += moveInput.y * Time.deltaTime;
-                Debug.Log("Forward distance: " + forwardDistance);
+                //Debug.Log("Forward distance: " + forwardDistance);
             }
             else
             {

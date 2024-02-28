@@ -19,6 +19,9 @@ namespace Plattko
         [Header("Hill Scale Variables")]
         private Vector3 minScale = new Vector3(8f, 8f, 1f);
         private Vector3 maxScale = new Vector3(20f, 20f, 1f);
+        private Vector3 previousHillScale = new Vector3(32f, 32f, 1f);
+
+        private Vector3 nextHillScale;
 
         private float scaleInForwardDistance = 1f;
         private float noScaleForwardDistance = 8.5f;
@@ -35,11 +38,18 @@ namespace Plattko
 
         void Start()
         {
-            //for (int i = 1; i < hills.Length; i++)
-            //{
-            //    hills[i].transform.localScale = new Vector3(hills[i - 1].transform.localScale.x / 2, hills[i - 1].transform.localScale.y / 2, 1f);
-            //    Debug.Log("Hill local scale: " + hills[i].transform.localScale);
-            //}
+            int highestSortOrder = hills.Length * 5;
+            
+            for (int i = 0; i < hills.Length; i++)
+            {
+                Transform hill = hills[i].transform;
+                hill.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(highestSortOrder - (i * 5));
+                Debug.Log("Hill " + i + " sorting order: " + hill.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder);
+            }
+
+            playerController.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = highestSortOrder + 1;
+
+            SetHillScales();
         }
 
         void Update()
@@ -47,7 +57,15 @@ namespace Plattko
             if (playerController.forwardDistance >= scaleInForwardDistance && playerController.forwardDistance <= noScaleForwardDistance)
             {
                 float t = Mathf.InverseLerp(scaleInForwardDistance, noScaleForwardDistance, playerController.forwardDistance);
+                // Scale the current hill
                 hills[currentHill].transform.localScale = Vector3.Lerp(minScale, maxScale, t);
+                // Scale the distant hills
+                ScaleDistantHills(t);
+                // Scale the previous hill
+                if (currentHill > 0)
+                {
+                    hills[currentHill - 1].transform.localScale = Vector3.Lerp(maxScale, previousHillScale, t);
+                }
             }
 
             //if (playerController.forwardDistance > scaleOutForwardDistance)
@@ -75,9 +93,12 @@ namespace Plattko
 
             currentHill++;
 
+            // Update all hills' current min sizes
+            UpdateHillScales();
             // Set new player sprite sorting order
-            int newSortingOrder = hills[currentHill].transform.GetComponent<SpriteRenderer>().sortingOrder + 1;
+            int newSortingOrder = hills[currentHill].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder + 1;
             playerController.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = newSortingOrder;
+            Debug.Log("Player new sorting order: " + newSortingOrder);
             // Set player to near side of hill
             playerController.isOnNearSide = true;
             // Set new player parent
@@ -90,6 +111,45 @@ namespace Plattko
             playerController.isInHillTransition = false;
 
             Debug.Log("Hill forward transition complete.");
+        }
+
+        public void SetHillScales()
+        {
+            for (int i = 0; i < hills.Length; i++)
+            {
+                Transform hill = hills[i].transform;
+
+                float t = (float)i / (hills.Length - 1);
+                float scaleFactor = Mathf.Lerp(8f, 2f, t);
+
+                hill.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+
+                hill.GetComponent<Hill>().currentMinScale = hill.localScale;
+            }
+        }
+
+        public void UpdateHillScales()
+        {
+            for (int i = 0; i < hills.Length; i++)
+            {
+                Transform hill = hills[i].transform;
+                hill.GetComponent<Hill>().currentMinScale = hill.localScale;
+            }
+        }
+
+        public void ScaleDistantHills(float t)
+        {
+            for (int i = currentHill + 1; i < hills.Length; i++)
+            {
+                Transform hill = hills[i].transform;
+                Hill hillData = hill.GetComponent<Hill>();
+                Hill previousHilLData = hills[i - 1].transform.GetComponent<Hill>();
+
+                if (previousHilLData != null)
+                {
+                    hill.localScale = Vector3.Lerp(hillData.currentMinScale, previousHilLData.currentMinScale, t);
+                }
+            }
         }
     }
 }

@@ -7,41 +7,41 @@ namespace Plattko
 {
     public class CameraController : MonoBehaviour
     {
-        private enum CameraState
-        {
-            FarPan,
-            StillPan,
-            HillTopPan
-        }
+        //private enum CameraState
+        //{
+        //    FarPan,
+        //    StillPan,
+        //    HillTopPan
+        //}
 
-        private CameraState cameraState;
+        //private CameraState cameraState;
         
-        [SerializeField] private Transform hill;
-        [SerializeField] private Transform player;
-        private CinemachineVirtualCamera virtualCam;
-        private PlayerController playerController;
+        //[SerializeField] private Transform hill;
+        //[SerializeField] private Transform player;
+        //private CinemachineVirtualCamera virtualCam;
+        //private PlayerController playerController;
 
-        [Header("Ortho bounds")]
-        [SerializeField] private float maxOrthoSize = 16f;
-        [SerializeField] private float minOrthoSize = 10f;
-        [SerializeField] private float panOutOrthoSize = 20f;
-        private float orthoSize;
+        //[Header("Ortho bounds")]
+        //[SerializeField] private float maxOrthoSize = 16f;
+        //[SerializeField] private float minOrthoSize = 10f;
+        //[SerializeField] private float panOutOrthoSize = 20f;
+        //private float orthoSize;
 
-        [Header("Camera behaviour points")]
-        private float stillPanFowardDistance = 4f;
-        private float panOutForwardDistance = 7.2f;
+        //[Header("Camera behaviour points")]
+        //private float stillPanFowardDistance = 4f;
+        //private float panOutForwardDistance = 7.2f;
         
-        // Smooth damping
-        private float velocity = 0f;
-        private float smoothTime = 0.1f;
+        //// Smooth damping
+        //private float velocity = 0f;
+        //private float smoothTime = 0.1f;
         
-        private void Start()
-        {
-            cameraState = CameraState.FarPan;
-            virtualCam = GetComponent<CinemachineVirtualCamera>();
-            playerController = player.GetComponent<PlayerController>();
-            orthoSize = virtualCam.m_Lens.OrthographicSize;
-        }
+        //private void Start()
+        //{
+        //    cameraState = CameraState.FarPan;
+        //    virtualCam = GetComponent<CinemachineVirtualCamera>();
+        //    playerController = player.GetComponent<PlayerController>();
+        //    orthoSize = virtualCam.m_Lens.OrthographicSize;
+        //}
 
         private void Update()
         {
