@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 namespace Plattko
 {
@@ -9,10 +10,22 @@ namespace Plattko
     {
         [SerializeField] private GameObject[] hills;
         [SerializeField] private PlayerController playerController;
+        [SerializeField] private CinemachineVirtualCamera virtualCam;
 
-        private Vector3 newHillPlayerScale = new Vector3(0.1f, 0.1f, 1f);
+        private Vector3 newHillPlayerScale = new Vector3(0.05f, 0.05f, 1f);
         private float transitionTime = 2f;
-        private float nextHillDistance = 9.3f;
+        private float nextHillDistance = 15.3f;
+
+        [Header("Hill Scale Variables")]
+        private Vector3 minScale = new Vector3(8f, 8f, 1f);
+        private Vector3 maxScale = new Vector3(20f, 20f, 1f);
+
+        private float scaleInForwardDistance = 1f;
+        private float noScaleForwardDistance = 8.5f;
+
+        [Header("Camera Zoom Variables")]
+        private float minZoom = 10f;
+        private float maxZoom = 5f;
 
         private int currentHill = 0;
 
@@ -27,6 +40,12 @@ namespace Plattko
 
         void Update()
         {
+            if (playerController.forwardDistance >= scaleInForwardDistance && playerController.forwardDistance <= noScaleForwardDistance)
+            {
+                float t = Mathf.InverseLerp(scaleInForwardDistance, noScaleForwardDistance, playerController.forwardDistance);
+                hills[currentHill].transform.localScale = Vector3.Lerp(minScale, maxScale, t);
+            }
+
             if (playerController.forwardDistance > nextHillDistance)
             {
                 StartCoroutine(HillForwardTransition());
@@ -56,7 +75,7 @@ namespace Plattko
             // Set new player scale
             playerController.transform.localScale = newHillPlayerScale;
             // Set new player position
-            playerController.transform.localPosition = new Vector2(playerController.transform.localPosition.x, -0.45f);
+            playerController.transform.localPosition = new Vector2(playerController.transform.localPosition.x, -0.4f);
             // Re-enable player input
             playerController.isInHillTransition = false;
 

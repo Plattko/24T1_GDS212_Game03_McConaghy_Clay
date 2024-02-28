@@ -839,7 +839,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124159263934906393, guid: 7a8830a476ac4354f9a04c5ba7e68b73, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2124159263934906393, guid: 7a8830a476ac4354f9a04c5ba7e68b73, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1052,7 +1052,7 @@ Transform:
   m_GameObject: {fileID: 1820780449}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3, z: -10}
+  m_LocalPosition: {x: 0, y: -3.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1294,6 +1294,7 @@ MonoBehaviour:
   - {fileID: 475199580}
   - {fileID: 1957866976}
   playerController: {fileID: 1792639054}
+  virtualCam: {fileID: 2074890116}
 --- !u!1 &2001595615
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,7 +1443,7 @@ Transform:
   m_GameObject: {fileID: 2074890115}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3, z: -10}
+  m_LocalPosition: {x: 0, y: -3.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1474,6 +1475,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2124159263934906393, guid: 7a8830a476ac4354f9a04c5ba7e68b73, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124159263934906393, guid: 7a8830a476ac4354f9a04c5ba7e68b73, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2124159263934906393, guid: 7a8830a476ac4354f9a04c5ba7e68b73, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1517,6 +1526,10 @@ PrefabInstance:
     - target: {fileID: 4187236029514600981, guid: 7a8830a476ac4354f9a04c5ba7e68b73, type: 3}
       propertyPath: m_Name
       value: Temp_Hill
+      objectReference: {fileID: 0}
+    - target: {fileID: 5125369554604446782, guid: 7a8830a476ac4354f9a04c5ba7e68b73, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
