@@ -24,6 +24,7 @@ namespace Plattko
         private float noScaleForwardDistance = 15f;
 
         private int currentHill = 0;
+        private bool isInHillTransition = false;
 
         void Start()
         {
@@ -49,7 +50,6 @@ namespace Plattko
             {
                 HillParallax hillParallax = hillParallaxes[i];
                 hillParallax.SetHillParallax(index);
-                Debug.Log("Hill parallax " + hillParallaxes[i] + "hill index: " + index);
                 index++;
             }
         }
@@ -80,11 +80,14 @@ namespace Plattko
                 cameraController.PanIn();
             }
 
-            // Update hill parallaxes
-            for (int i = currentHill + 1; i < hillParallaxes.Length; i++)
+            if (!isInHillTransition)
             {
-                HillParallax hillParallax = hillParallaxes[i];
-                hillParallax.UpdateParallax(playerController.forwardDistance);
+                // Update hill parallaxes
+                for (int i = currentHill + 1; i < hillParallaxes.Length; i++)
+                {
+                    HillParallax hillParallax = hillParallaxes[i];
+                    hillParallax.UpdateParallax(playerController.forwardDistance);
+                }
             }
 
             // Transition player to next hill
@@ -97,18 +100,38 @@ namespace Plattko
         private IEnumerator HillForwardTransition()
         {
             Debug.Log("Began hill foward transition.");
+            // Set is in hill transition to true
+            isInHillTransition = true;
+            // Reset the player's forward distance
             playerController.forwardDistance = 0f;
             // Disable player input
             playerController.isInHillTransition = true;
 
-            yield return new WaitForSeconds(transitionTime);
+            //yield return new WaitForSeconds(transitionTime);
 
+            // Disable current hill's box collider
             hills[currentHill].GetComponent<BoxCollider2D>().enabled = false;
+            // Enable the next hill's box collider
+            hills[currentHill + 1].GetComponent<BoxCollider2D>().enabled = true;
 
+            // Update the current hill
             currentHill++;
 
             // Update all hills' current min sizes
             UpdateHillScales();
+
+            // Update all hills' start positions
+            UpdateDistantHillPositions();
+
+            // Update all hills' parallaxes
+            int index = 0;
+            for (int i = currentHill + 1; i < hillParallaxes.Length; i++)
+            {
+                HillParallax hillParallax = hillParallaxes[i];
+                hillParallax.SetHillParallax(index);
+                index++;
+            }
+
             // Set new player sprite sorting order
             int newSortingOrder = hills[currentHill].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder + 1;
             playerController.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = newSortingOrder;
@@ -123,8 +146,12 @@ namespace Plattko
             playerController.transform.localPosition = new Vector2(playerController.transform.localPosition.x, -1.337f);
             // Re-enable player input
             playerController.isInHillTransition = false;
+            // Set is in hill transition to false
+            isInHillTransition = false;
 
             Debug.Log("Hill forward transition complete.");
+
+            yield return null;
         }
 
         public void SetHillScales()
@@ -157,12 +184,36 @@ namespace Plattko
             {
                 Transform hill = hills[i].transform;
                 Hill hillData = hill.GetComponent<Hill>();
-                Hill previousHilLData = hills[i - 1].transform.GetComponent<Hill>();
+                Hill previousHillData = hills[i - 1].transform.GetComponent<Hill>();
 
-                if (previousHilLData != null)
+                if (previousHillData != null)
                 {
-                    hill.localScale = Vector3.Lerp(hillData.currentMinScale, previousHilLData.currentMinScale, t);
+                    hill.localScale = Vector3.Lerp(hillData.currentMinScale, previousHillData.currentMinScale, t);
                 }
+            }
+        }
+
+        public void UpdateDistantHillPositions()
+        {
+            Vector3 currentHillPosition = hills[currentHill].transform.position;
+            Debug.Log("Current hill position: " + currentHillPosition);
+
+            int index = 0;
+            for (int i = currentHill + 1; i < hills.Length; i++)
+            {
+                Transform hill = hills[i].transform;
+
+                if (index == 0)
+                {
+                    hill.position = new Vector3(currentHillPosition.x, currentHillPosition.y + 2.1f, currentHillPosition.z);
+                    Debug.Log(hills[i] + " position: " + hill.position);
+                }
+                else if (i > 0)
+                {
+                    hill.position = new Vector3(currentHillPosition.x, currentHillPosition.y + 4.1f, currentHillPosition.z);
+                    Debug.Log(hills[i] + " position: " + hill.position);
+                }
+                index++;
             }
         }
     }

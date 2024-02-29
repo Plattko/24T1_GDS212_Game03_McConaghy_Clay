@@ -24,18 +24,13 @@ namespace Plattko
             {
                 targetPosition = new Vector2(startPosition.x, startPosition.y + 13.8f);
             }
-            else if (index == 1)
+            else if (index > 0)
             {
                 targetPosition = new Vector2(startPosition.x, startPosition.y + 15f);
             }
-            else if (index == 2)
-            {
-                targetPosition = new Vector2(startPosition.x, startPosition.y + 10f);
-            }
-            else
-            {
-                Debug.Log("Index " + hillIndex + "not included.");
-            }
+
+            Debug.Log("Hill " + (index + 1) + " start position: " + startPosition);
+            Debug.Log("Hill " + (index + 1) + " target position: " + targetPosition);
         }
 
         // Lerp hill based on hill index
