@@ -7,6 +7,9 @@ namespace Plattko
 {
     public class PlayerController : MonoBehaviour
     {
+        public GameObject moveJoystick;
+        public GameObject interactButton;
+
         private Rigidbody2D rb;
         [HideInInspector] public SpriteRenderer spriteRenderer;
         
@@ -18,9 +21,11 @@ namespace Plattko
         // Hill traversal variables
         public float forwardDistance = 0f;
         public bool isInHillTransition = false;
+        public bool isInteractButtonVisible = false;
 
         void Awake()
         {
+            Physics2D.callbacksOnDisable = false;
             rb = GetComponent<Rigidbody2D>();
             spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         }
@@ -61,10 +66,32 @@ namespace Plattko
 
         public void OnInteract(InputAction.CallbackContext context)
         {
-            if (!isInHillTransition)
+            if (context.started && !isInHillTransition && isInteractButtonVisible)
             {
                 Debug.Log("Interact button pressed.");
+
+                // Interact with the closest interactable object
+                InteractRadius[] interactableObjects = GameObject.FindObjectsByType<InteractRadius>(FindObjectsSortMode.None);
+                GetClosestInteractableObject(interactableObjects).Interact();
             }
+        }
+
+        private InteractRadius GetClosestInteractableObject(InteractRadius[] interactableObjects)
+        {
+            InteractRadius closestObject = null;
+            float minDistance = Mathf.Infinity;
+
+            foreach (InteractRadius interactableObject in interactableObjects)
+            {
+                float distance = (interactableObject.transform.position - transform.position).sqrMagnitude;
+
+                if (distance < minDistance)
+                {
+                    closestObject = interactableObject;
+                    minDistance = distance;
+                }
+            }
+            return closestObject;
         }
     }
 }
