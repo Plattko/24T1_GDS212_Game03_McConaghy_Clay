@@ -12,7 +12,6 @@ namespace Plattko
         [SerializeField] private CameraController cameraController;
 
         private Vector3 newHillPlayerScale = new Vector3(0.05f, 0.05f, 1f);
-        private float transitionTime = 2f;
         private float nextHillDistance = 22f;
 
         [Header("Hill Scale Variables")]
@@ -28,7 +27,6 @@ namespace Plattko
 
         [Header("Camera Follow Variables")]
         private float reactivateCameraForwardDistance = 2.8f;
-        private float screenHalfWayPoint;
 
         void Start()
         {
@@ -215,7 +213,7 @@ namespace Plattko
             Debug.Log("Current hill position: " + currentHillPosition);
 
             int index = 0;
-            float smoothTime = 1f;
+            float smoothTime = 0.5f;
 
             for (int i = currentHill + 1; i < hills.Length; i++)
             {
