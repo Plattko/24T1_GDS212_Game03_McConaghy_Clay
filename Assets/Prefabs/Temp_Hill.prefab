@@ -227,7 +227,7 @@ EdgeCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4187236029514600981}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -255,8 +255,22 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.5, y: 0.5}
-  - {x: -0.5, y: -0.5}
+  - {x: -0.054, y: 0.6}
+  - {x: -0.054, y: 0.49207324}
+  - {x: -0.14182438, y: 0.45693427}
+  - {x: -0.24633107, y: 0.3861885}
+  - {x: -0.335483, y: 0.3016999}
+  - {x: -0.50718975, y: 0.22786096}
+  - {x: -0.6772701, y: 0.08719769}
+  - {x: -0.9202162, y: -0.009657554}
+  - {x: -1.0703872, y: -0.14882728}
+  - {x: -1.1503025, y: -0.17752056}
+  - {x: -1.5518348, y: -0.24491434}
+  - {x: -1.6918007, y: -0.3040036}
+  - {x: -1.8784328, y: -0.42519143}
+  - {x: -1.999, y: -0.45369703}
+  - {x: -1.999, y: -3}
+  - {x: 0.04, y: -3}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -268,7 +282,7 @@ EdgeCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4187236029514600981}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -296,8 +310,26 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 0.5, y: 0.5}
-  - {x: 0.5, y: -0.5}
+  - {x: 0.063, y: 0.6}
+  - {x: 0.063, y: 0.49144757}
+  - {x: 0.12321602, y: 0.47516394}
+  - {x: 0.20134367, y: 0.4211118}
+  - {x: 0.27902478, y: 0.35019392}
+  - {x: 0.3575412, y: 0.22320005}
+  - {x: 0.41996825, y: 0.16078185}
+  - {x: 0.56665933, y: 0.07221138}
+  - {x: 0.66344255, y: 0.0031941663}
+  - {x: 0.7687484, y: -0.092436016}
+  - {x: 0.96833116, y: -0.17493129}
+  - {x: 1.0924919, y: -0.2897498}
+  - {x: 1.2101166, y: -0.34396166}
+  - {x: 1.3876933, y: -0.36680958}
+  - {x: 1.5081269, y: -0.3752619}
+  - {x: 1.6932942, y: -0.42145887}
+  - {x: 1.8005209, y: -0.46740514}
+  - {x: 1.997, y: -0.5230069}
+  - {x: 1.997, y: -3}
+  - {x: 0.05, y: -3}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0

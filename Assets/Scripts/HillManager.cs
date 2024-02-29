@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Plattko
@@ -125,8 +124,21 @@ namespace Plattko
 
             // Disable current hill's box collider
             hills[currentHill].GetComponent<BoxCollider2D>().enabled = false;
+            // Disable current hill's edge colliders
+            EdgeCollider2D[] previousEdgeColliders = hills[currentHill].GetComponents<EdgeCollider2D>();
+            foreach (EdgeCollider2D edgeCollider in previousEdgeColliders)
+            {
+                edgeCollider.enabled = false;
+            }
+            
             // Enable the next hill's box collider
             hills[currentHill + 1].GetComponent<BoxCollider2D>().enabled = true;
+            // Enable the next hill's edge colliders
+            EdgeCollider2D[] nextEdgeColliders = hills[currentHill + 1].GetComponents<EdgeCollider2D>();
+            foreach (EdgeCollider2D edgeCollider in nextEdgeColliders)
+            {
+                edgeCollider.enabled = true;
+            }
 
             // Update the current hill
             currentHill++;
