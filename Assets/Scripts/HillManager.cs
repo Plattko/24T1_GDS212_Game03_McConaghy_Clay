@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Cinemachine;
 
 namespace Plattko
 {
@@ -22,18 +20,8 @@ namespace Plattko
         private Vector3 maxScale = new Vector3(14f, 14f, 1f);
         private Vector3 previousHillScale = new Vector3(32f, 32f, 1f);
 
-        private Vector3 nextHillScale;
-
         private float scaleInForwardDistance = 1f;
         private float noScaleForwardDistance = 15f;
-        //private float scaleOutForwardDistance = 11f;
-
-        //private Vector3 scaleVelocity = Vector3.zero;
-
-        //[Header("Camera Zoom Variables")]
-        //private float minZoom = 25f;
-        //private float maxZoom = 10f;
-        //private float camVelocity = 0f;
 
         private int currentHill = 0;
 
@@ -92,12 +80,6 @@ namespace Plattko
                 cameraController.PanIn();
             }
 
-            //if (playerController.forwardDistance > scaleOutForwardDistance)
-            //{
-            //    virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, minZoom, ref camVelocity, 1f);
-            //    //hills[currentHill].transform.localScale = Vector3.SmoothDamp(hills[currentHill].transform.localScale, minScale, ref scaleVelocity, 1f);
-            //}
-
             // Update hill parallaxes
             for (int i = currentHill + 1; i < hillParallaxes.Length; i++)
             {
@@ -110,21 +92,6 @@ namespace Plattko
             {
                 StartCoroutine(HillForwardTransition());
             }
-
-            //float playerYPosition = playerController.transform.position.y;
-
-            //for (int i = 0; i < hillParallaxes.Length; i++)
-            //{
-            //    if (i != currentHill)
-            //    {
-            //        hillParallaxes[i].UpdateParallax(playerYPosition);
-            //    }
-            //}
-
-            //for (int i = currentHill; i < hillParallaxes.Length; i++)
-            //{
-            //    hillParallaxes[i].ScrollHill(playerController.forwardDistance, 5 / (i + 1));
-            //}
         }
 
         private IEnumerator HillForwardTransition()
