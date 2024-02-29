@@ -15,7 +15,7 @@ namespace Plattko
 
         private Vector3 newHillPlayerScale = new Vector3(0.05f, 0.05f, 1f);
         private float transitionTime = 2f;
-        private float nextHillDistance = 14f;
+        private float nextHillDistance = 22f;
 
         [Header("Hill Scale Variables")]
         private Vector3 minScale = new Vector3(8f, 8f, 1f);
@@ -25,7 +25,7 @@ namespace Plattko
         private Vector3 nextHillScale;
 
         private float scaleInForwardDistance = 1f;
-        private float noScaleForwardDistance = 5.75f;
+        private float noScaleForwardDistance = 15f;
         //private float scaleOutForwardDistance = 11f;
 
         //private Vector3 scaleVelocity = Vector3.zero;
@@ -143,7 +143,7 @@ namespace Plattko
             // Set new player scale
             playerController.transform.localScale = newHillPlayerScale;
             // Set new player position
-            playerController.transform.localPosition = new Vector2(playerController.transform.localPosition.x, -0.4f);
+            playerController.transform.localPosition = new Vector2(playerController.transform.localPosition.x, -1.337f);
             // Re-enable player input
             playerController.isInHillTransition = false;
 

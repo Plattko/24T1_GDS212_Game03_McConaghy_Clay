@@ -36,7 +36,7 @@ namespace Plattko
         [SerializeField] private Vector2 targetPosition;
 
         private float startLerpDistance = 0f;
-        private float stopLerpDistance = 5.75f;
+        private float stopLerpDistance = 15f;
 
         // Set hill parallax
         public void SetHillParallax(int index)
