@@ -26,6 +26,10 @@ namespace Plattko
         private int currentHill = 0;
         private bool isInHillTransition = false;
 
+        [Header("Camera Follow Variables")]
+        private float reactivateCameraForwardDistance = 2.8f;
+        private float screenHalfWayPoint;
+
         void Start()
         {
             int highestSortOrder = hills.Length * 5;
@@ -75,9 +79,10 @@ namespace Plattko
             {
                 cameraController.PanOut();
             }
-            else
+            else if (cameraController.isActive)
             {
                 cameraController.PanIn();
+                Debug.Log("Pan in condition met. isActive: " + cameraController.isActive);
             }
 
             // Update hill parallaxes
@@ -100,6 +105,12 @@ namespace Plattko
             {
                 StartCoroutine(HillForwardTransition());
             }
+
+            //Reactivate camera if player reaches reactivation distance
+            if (playerController.forwardDistance >= reactivateCameraForwardDistance && !cameraController.isActive)
+            {
+                cameraController.ReactivateCamera();
+            }
         }
 
         private IEnumerator HillForwardTransition()
@@ -107,12 +118,12 @@ namespace Plattko
             Debug.Log("Began hill foward transition.");
             // Set is in hill transition to true
             isInHillTransition = true;
+            // Set camera to not actively follow player
+            cameraController.isActive = false;
             // Reset the player's forward distance
             playerController.forwardDistance = 0f;
             // Disable player input
             playerController.isInHillTransition = true;
-
-            //yield return new WaitForSeconds(transitionTime);
 
             // Disable current hill's box collider
             hills[currentHill].GetComponent<BoxCollider2D>().enabled = false;

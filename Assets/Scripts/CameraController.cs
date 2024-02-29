@@ -18,6 +18,7 @@ namespace Plattko
         private float smoothTime = 2f;
 
         private bool isPannedOut = false;
+        public bool isActive = true;
 
         private void Start()
         {
@@ -51,6 +52,11 @@ namespace Plattko
             }
 
             framingTransposer.m_TrackedObjectOffset = Vector3.SmoothDamp(framingTransposer.m_TrackedObjectOffset, startOffset, ref velocity, smoothTime);
+        }
+
+        public void ReactivateCamera()
+        {
+            isActive = true;
         }
     }
 }
