@@ -121,7 +121,7 @@ namespace Plattko
             UpdateHillScales();
 
             // Update all hills' start positions
-            UpdateDistantHillPositions();
+            yield return StartCoroutine(UpdateDistantHillPositions());
 
             // Update all hills' parallaxes
             int index = 0;
@@ -193,26 +193,48 @@ namespace Plattko
             }
         }
 
-        public void UpdateDistantHillPositions()
+        public IEnumerator UpdateDistantHillPositions()
         {
             Vector3 currentHillPosition = hills[currentHill].transform.position;
             Debug.Log("Current hill position: " + currentHillPosition);
 
             int index = 0;
+            float smoothTime = 1f;
+
             for (int i = currentHill + 1; i < hills.Length; i++)
             {
                 Transform hill = hills[i].transform;
+                Vector3 targetPosition = Vector3.zero;
 
                 if (index == 0)
                 {
-                    hill.position = new Vector3(currentHillPosition.x, currentHillPosition.y + 2.1f, currentHillPosition.z);
+                    targetPosition = new Vector3(currentHillPosition.x, currentHillPosition.y + 2.1f, currentHillPosition.z);
                     Debug.Log(hills[i] + " position: " + hill.position);
                 }
-                else if (i > 0)
+                else if (index > 0)
                 {
-                    hill.position = new Vector3(currentHillPosition.x, currentHillPosition.y + 4.1f, currentHillPosition.z);
+                    targetPosition = new Vector3(currentHillPosition.x, currentHillPosition.y + 4.1f, currentHillPosition.z);
                     Debug.Log(hills[i] + " position: " + hill.position);
                 }
+
+                float elapsedTime = 0f;
+                Vector3 velocity = Vector3.zero;
+
+                if (index <= 1)
+                {
+                    while (elapsedTime < smoothTime)
+                    {
+                        hill.position = Vector3.SmoothDamp(hill.position, targetPosition, ref velocity, smoothTime);
+                        elapsedTime += Time.deltaTime;
+                        yield return null;
+                    }
+                }
+                else
+                {
+                    hill.position = targetPosition;
+                }
+                Debug.Log("Finished hill " + i + "position transition.");
+
                 index++;
             }
         }
