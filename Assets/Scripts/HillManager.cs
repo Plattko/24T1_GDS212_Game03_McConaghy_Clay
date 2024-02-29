@@ -80,13 +80,18 @@ namespace Plattko
                 cameraController.PanIn();
             }
 
+            // Update hill parallaxes
             if (!isInHillTransition)
             {
-                // Update hill parallaxes
                 for (int i = currentHill + 1; i < hillParallaxes.Length; i++)
                 {
                     HillParallax hillParallax = hillParallaxes[i];
                     hillParallax.UpdateParallax(playerController.forwardDistance);
+                }
+
+                if (currentHill > 0)
+                {
+                    hillParallaxes[currentHill - 1].UpdateParallax(playerController.forwardDistance);
                 }
             }
 
@@ -119,11 +124,9 @@ namespace Plattko
 
             // Update all hills' current min sizes
             UpdateHillScales();
-
             // Update all hills' start positions
             yield return StartCoroutine(UpdateDistantHillPositions());
-
-            // Update all hills' parallaxes
+            // Update all distant hills' parallaxes
             int index = 0;
             for (int i = currentHill + 1; i < hillParallaxes.Length; i++)
             {
@@ -131,6 +134,8 @@ namespace Plattko
                 hillParallax.SetHillParallax(index);
                 index++;
             }
+            // Update previous hill's parallax
+            hillParallaxes[currentHill - 1].SetPreviousHillParallax();
 
             // Set new player sprite sorting order
             int newSortingOrder = hills[currentHill].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder + 1;

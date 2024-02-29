@@ -33,6 +33,15 @@ namespace Plattko
             Debug.Log("Hill " + (index + 1) + " target position: " + targetPosition);
         }
 
+        // Set previous hill parallax
+        public void SetPreviousHillParallax()
+        {
+            startPosition = transform.position;
+            targetPosition = new Vector2(startPosition.x, startPosition.y - 20f);
+            Debug.Log("Previous hill start position: " + startPosition);
+            Debug.Log("Previous hill target position: " + targetPosition);
+        }
+
         // Lerp hill based on hill index
         public void UpdateParallax(float forwardDistance)
         {
