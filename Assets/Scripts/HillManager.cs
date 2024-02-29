@@ -19,13 +19,13 @@ namespace Plattko
 
         [Header("Hill Scale Variables")]
         private Vector3 minScale = new Vector3(8f, 8f, 1f);
-        private Vector3 maxScale = new Vector3(20f, 20f, 1f);
+        private Vector3 maxScale = new Vector3(14f, 14f, 1f);
         private Vector3 previousHillScale = new Vector3(32f, 32f, 1f);
 
         private Vector3 nextHillScale;
 
         private float scaleInForwardDistance = 1f;
-        private float noScaleForwardDistance = 8.5f;
+        private float noScaleForwardDistance = 5.75f;
         //private float scaleOutForwardDistance = 11f;
 
         //private Vector3 scaleVelocity = Vector3.zero;
@@ -41,6 +41,7 @@ namespace Plattko
         {
             int highestSortOrder = hills.Length * 5;
             
+            // Set hill sorting orders
             for (int i = 0; i < hills.Length; i++)
             {
                 Transform hill = hills[i].transform;
@@ -48,9 +49,21 @@ namespace Plattko
                 Debug.Log("Hill " + i + " sorting order: " + hill.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder);
             }
 
+            // Set player sorting order
             playerController.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = highestSortOrder + 1;
 
+            // Set hill scales
             SetHillScales();
+
+            // Set hill parallaxes
+            int index = 0;
+            for (int i = currentHill + 1; i < hillParallaxes.Length; i++)
+            {
+                HillParallax hillParallax = hillParallaxes[i];
+                hillParallax.SetHillParallax(index);
+                Debug.Log("Hill parallax " + hillParallaxes[i] + "hill index: " + index);
+                index++;
+            }
         }
 
         void Update()
@@ -75,6 +88,14 @@ namespace Plattko
             //    //hills[currentHill].transform.localScale = Vector3.SmoothDamp(hills[currentHill].transform.localScale, minScale, ref scaleVelocity, 1f);
             //}
 
+            // Update hill parallaxes
+            for (int i = currentHill + 1; i < hillParallaxes.Length; i++)
+            {
+                HillParallax hillParallax = hillParallaxes[i];
+                hillParallax.UpdateParallax(playerController.forwardDistance);
+            }
+
+            // Transition player to next hill
             if (playerController.forwardDistance > nextHillDistance)
             {
                 StartCoroutine(HillForwardTransition());
