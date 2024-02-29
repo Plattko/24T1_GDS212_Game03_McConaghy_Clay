@@ -11,7 +11,7 @@ namespace Plattko
         [SerializeField] private GameObject[] hills;
         [SerializeField] private HillParallax[] hillParallaxes;
         [SerializeField] private PlayerController playerController;
-        [SerializeField] private CinemachineVirtualCamera virtualCam;
+        [SerializeField] private CameraController cameraController;
 
         private Vector3 newHillPlayerScale = new Vector3(0.05f, 0.05f, 1f);
         private float transitionTime = 2f;
@@ -80,6 +80,16 @@ namespace Plattko
                 {
                     hills[currentHill - 1].transform.localScale = Vector3.Lerp(maxScale, previousHillScale, t);
                 }
+            }
+
+            // Pan out camera when player is at top of hill
+            if (playerController.forwardDistance >= noScaleForwardDistance)
+            {
+                cameraController.PanOut();
+            }
+            else
+            {
+                cameraController.PanIn();
             }
 
             //if (playerController.forwardDistance > scaleOutForwardDistance)
