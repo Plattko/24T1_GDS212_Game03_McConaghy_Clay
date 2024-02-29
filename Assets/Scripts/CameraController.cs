@@ -10,6 +10,7 @@ namespace Plattko
         private CinemachineVirtualCamera virtualCam;
         private CinemachineFramingTransposer framingTransposer;
         private Transform followTarget;
+        [SerializeField] private Transform dummyFollowTarget;
 
         private Vector3 startOffset;
         private Vector3 panOutOffset = new Vector3(0f, 5f, 0f);
@@ -29,13 +30,14 @@ namespace Plattko
 
         public void PanOut()
         {
-            framingTransposer.m_TrackedObjectOffset = Vector3.SmoothDamp(framingTransposer.m_TrackedObjectOffset, panOutOffset, ref velocity, smoothTime);
-
-            if (Vector3.Distance(framingTransposer.m_TrackedObjectOffset, panOutOffset) < 0.01f)
+            if (!isPannedOut)
             {
-                virtualCam.Follow = null;
+                dummyFollowTarget.position = virtualCam.transform.position;
+                virtualCam.Follow = dummyFollowTarget;
                 isPannedOut = true;
             }
+            
+            framingTransposer.m_TrackedObjectOffset = Vector3.SmoothDamp(framingTransposer.m_TrackedObjectOffset, panOutOffset, ref velocity, smoothTime);
         }
 
         public void PanIn()
