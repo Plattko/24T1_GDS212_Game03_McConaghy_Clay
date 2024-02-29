@@ -7,105 +7,56 @@ namespace Plattko
 {
     public class CameraController : MonoBehaviour
     {
-        //private enum CameraState
-        //{
-        //    FarPan,
-        //    StillPan,
-        //    HillTopPan
-        //}
+        private CinemachineVirtualCamera virtualCam;
+        private CinemachineFramingTransposer framingTransposer;
+        private Transform followTarget;
+        [SerializeField] private Transform dummyFollowTarget;
 
-        //private CameraState cameraState;
-        
-        //[SerializeField] private Transform hill;
-        //[SerializeField] private Transform player;
-        //private CinemachineVirtualCamera virtualCam;
-        //private PlayerController playerController;
+        private Vector3 startOffset;
+        private Vector3 panOutOffset = new Vector3(0f, 5f, 0f);
+        private Vector3 velocity = Vector3.zero;
+        private float smoothTime = 2f;
 
-        //[Header("Ortho bounds")]
-        //[SerializeField] private float maxOrthoSize = 16f;
-        //[SerializeField] private float minOrthoSize = 10f;
-        //[SerializeField] private float panOutOrthoSize = 20f;
-        //private float orthoSize;
+        private bool isPannedOut = false;
+        public bool isActive = true;
 
-        //[Header("Camera behaviour points")]
-        //private float stillPanFowardDistance = 4f;
-        //private float panOutForwardDistance = 7.2f;
-        
-        //// Smooth damping
-        //private float velocity = 0f;
-        //private float smoothTime = 0.1f;
-        
-        //private void Start()
-        //{
-        //    cameraState = CameraState.FarPan;
-        //    virtualCam = GetComponent<CinemachineVirtualCamera>();
-        //    playerController = player.GetComponent<PlayerController>();
-        //    orthoSize = virtualCam.m_Lens.OrthographicSize;
-        //}
-
-        private void Update()
+        private void Start()
         {
-            //switch (cameraState)
-            //{
-            //    case CameraState.FarPan:
-                    
-            //        Vector3 playerPos = hill.InverseTransformPoint(player.position);
-            //        float distanceFromTop = playerPos.y - 0.5f;
+            virtualCam = GetComponent<CinemachineVirtualCamera>();
+            framingTransposer = virtualCam.GetCinemachineComponent<CinemachineFramingTransposer>();
+            followTarget = virtualCam.Follow;
 
-            //        //Debug.Log("Distance from top: " + distanceFromTop);
-            //        //Debug.Log("Player Y pos: " + playerPos.y);
+            startOffset = framingTransposer.m_TrackedObjectOffset;
+        }
 
-            //        orthoSize = Mathf.Abs(distanceFromTop) * 20f;
-            //        orthoSize = Mathf.Clamp(orthoSize, minOrthoSize, maxOrthoSize);
-            //        virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, orthoSize, ref velocity, smoothTime);
+        public void PanOut()
+        {
+            if (!isPannedOut)
+            {
+                dummyFollowTarget.position = virtualCam.transform.position;
+                virtualCam.Follow = dummyFollowTarget;
+                isPannedOut = true;
+            }
+            
+            framingTransposer.m_TrackedObjectOffset = Vector3.SmoothDamp(framingTransposer.m_TrackedObjectOffset, panOutOffset, ref velocity, smoothTime);
+        }
 
-            //        if (playerController.forwardDistance >= stillPanFowardDistance)
-            //        {
-            //            Debug.Log("Changed to StillPan state.");
-            //            virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, minOrthoSize, ref velocity, smoothTime);
-            //            cameraState = CameraState.StillPan;
-            //        }
-            //        break;
+        public void PanIn()
+        {
+            if (isPannedOut)
+            {
+                float yTrackingOffset = virtualCam.transform.position.y - followTarget.position.y;
+                framingTransposer.m_TrackedObjectOffset = new Vector3(framingTransposer.m_TrackedObjectOffset.x, yTrackingOffset, framingTransposer.m_TrackedObjectOffset.z);
+                virtualCam.Follow = followTarget;
+                isPannedOut = false;
+            }
 
-            //    case CameraState.StillPan:
+            framingTransposer.m_TrackedObjectOffset = Vector3.SmoothDamp(framingTransposer.m_TrackedObjectOffset, startOffset, ref velocity, smoothTime);
+        }
 
-            //        if (playerController.forwardDistance < stillPanFowardDistance)
-            //        {
-            //            Debug.Log("Changed to FarPan state.");
-            //            cameraState = CameraState.FarPan;
-            //        }
-
-            //        if (playerController.forwardDistance >= panOutForwardDistance)
-            //        {
-            //            Debug.Log("Changed to PanOut state.");
-            //            // Pan out
-            //            virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, panOutOrthoSize, ref velocity, 1f);
-
-            //            Debug.Log(Mathf.Abs(virtualCam.m_Lens.OrthographicSize - panOutOrthoSize));
-            //            if (Mathf.Abs(virtualCam.m_Lens.OrthographicSize - panOutOrthoSize) < 0.01f)
-            //            {
-            //                cameraState = CameraState.HillTopPan;
-            //            }
-            //        }
-            //        break;
-
-            //    case CameraState.HillTopPan:
-            //        if (playerController.forwardDistance < panOutForwardDistance)
-            //        {
-            //            Debug.Log("Changed to StillPan state.");
-            //            // Pan back in
-            //            virtualCam.m_Lens.OrthographicSize = Mathf.SmoothDamp(virtualCam.m_Lens.OrthographicSize, minOrthoSize, ref velocity, 1f);
-
-            //            if (Mathf.Abs(virtualCam.m_Lens.OrthographicSize - minOrthoSize) < 0.01f)
-            //            {
-            //                cameraState = CameraState.StillPan;
-            //            }
-            //        }
-            //        break;
-
-            //    default:
-            //        break;
-            //}
+        public void ReactivateCamera()
+        {
+            isActive = true;
         }
     }
 }

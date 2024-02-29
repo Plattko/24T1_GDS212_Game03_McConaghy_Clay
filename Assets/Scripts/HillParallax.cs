@@ -6,29 +6,47 @@ namespace Plattko
 {
     public class HillParallax : MonoBehaviour
     {
-        public float protrusionFactor = 1.5f;
-        private float startYPosition;
+        [SerializeField] private int hillIndex = 0;
+        [SerializeField] private Vector2 startPosition;
+        [SerializeField] private Vector2 targetPosition;
 
-        private void Start()
+        private float startLerpDistance = 0f;
+        private float stopLerpDistance = 15f;
+
+        // Set hill parallax
+        public void SetHillParallax(int index)
         {
-            startYPosition = transform.position.y;
+            startPosition = transform.position;
+            
+            hillIndex = index;
+
+            if (index == 0)
+            {
+                targetPosition = new Vector2(startPosition.x, startPosition.y + 13.8f);
+            }
+            else if (index > 0)
+            {
+                targetPosition = new Vector2(startPosition.x, startPosition.y + 15f);
+            }
+
+            Debug.Log("Hill " + (index + 1) + " start position: " + startPosition);
+            Debug.Log("Hill " + (index + 1) + " target position: " + targetPosition);
         }
 
-        public void UpdateParallax(float playerYPosition)
+        // Set previous hill parallax
+        public void SetPreviousHillParallax()
         {
-            float yOffset = startYPosition - playerYPosition;
-            //Debug.Log("player y pos: " + playerYPosition);
-            //Debug.Log("hill parallax y pos: " + transform.position.y);
-            //Debug.Log("y offset: " + yOffset);
-
-            float protrusionOffset = protrusionFactor * Mathf.Pow(yOffset, 1f);
-
-            transform.position = new Vector3(transform.position.x, playerYPosition + protrusionOffset, transform.position.z);
+            startPosition = transform.position;
+            targetPosition = new Vector2(startPosition.x, startPosition.y - 20f);
+            Debug.Log("Previous hill start position: " + startPosition);
+            Debug.Log("Previous hill target position: " + targetPosition);
         }
 
-        public void ScrollHill(float forwardDistance, float scrollSpeed)
+        // Lerp hill based on hill index
+        public void UpdateParallax(float forwardDistance)
         {
-            transform.position -= new Vector3(0, forwardDistance * scrollSpeed * Time.deltaTime, 0);
+            float t = Mathf.InverseLerp(startLerpDistance, stopLerpDistance, forwardDistance);
+            transform.position = Vector3.Lerp(startPosition, targetPosition, t);
         }
     }
 }
