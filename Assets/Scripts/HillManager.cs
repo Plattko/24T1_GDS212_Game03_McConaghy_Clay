@@ -11,7 +11,7 @@ namespace Plattko
         [SerializeField] private PlayerController playerController;
         [SerializeField] private CameraController cameraController;
 
-        private Vector3 newHillPlayerScale = new Vector3(0.05f, 0.05f, 1f);
+        private Vector3 newHillPlayerScale = new Vector3(0.065f, 0.065f, 1f);
         private float nextHillDistance = 22f;
 
         [Header("Hill Scale Variables")]
