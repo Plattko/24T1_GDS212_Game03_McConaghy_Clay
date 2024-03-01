@@ -10,6 +10,8 @@ namespace Plattko
 
         public Vector3 currentMinScale;
 
+        public bool isLastHill = false;
+
         private void Start()
         {
             spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
@@ -17,7 +19,7 @@ namespace Plattko
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag("Player"))
+            if (collision.CompareTag("Player") && !isLastHill)
             {
                 Debug.Log("Collision detected.");
                 PlayerController playerController = collision.GetComponent<PlayerController>();

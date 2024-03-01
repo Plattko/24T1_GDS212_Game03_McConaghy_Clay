@@ -38,7 +38,7 @@ namespace Plattko
                     rb.velocity = new Vector2(moveInput.x, -moveInput.y) * walkSpeed * Time.deltaTime * 50f;
                 }
 
-                forwardDistance += moveInput.y * Time.deltaTime;
+                forwardDistance += moveInput.y * walkSpeed * Time.deltaTime;
                 Debug.Log("Forward distance: " + forwardDistance);
             }
             else
